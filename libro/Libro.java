@@ -31,30 +31,30 @@ public class Libro {
         public LibroBuilder setGenere(String valore){
             genere = valore;
             return this;
-        }
+        }//setGenere
 
         public LibroBuilder setValutazione(String valore){
             valutazione = valore;
             return this;
-        }
+        }//setValutazione
 
         public LibroBuilder setDaLeggere(){
             stato = StatoLettura.DA_LEGGERE;
             return this;
-        }
+        }//setDaLeggere
 
         public LibroBuilder setInLettura(){
             stato = StatoLettura.IN_LETTURA;
             return this;
-        }
+        }//setInLettura
 
         public LibroBuilder setLetto(){
             stato = StatoLettura.LETTO;
             return this;
-        }
+        }//setLetto
         public Libro build(){
             return new Libro(this);
-        }
+        }//build
     }//LibroBuilder
 
     public Libro (LibroBuilder builder){
@@ -66,4 +66,27 @@ public class Libro {
         this.stato = builder.stato;
     }
 
+    public String getTitolo() {
+        return titolo;
+    }//getTitolo
+
+    public String getAutore() {
+        return autore;
+    }//getAutore
+
+    public String getISBN() {
+        return ISBN;
+    }//getISBN
+
+    public String getGenere() {
+        return genere;
+    }//getGenere
+
+    public String getValutazione() {
+        return valutazione;
+    }//getValutazione
+
+    public StatoLettura getStato() {
+        return stato;
+    }//getStato
 }//Libro
