@@ -7,9 +7,6 @@ public class Libro {
     private final String ISBN;
     private final String genere;
     private final String valutazione;
-    private enum StatoLettura{
-        DA_LEGGERE, IN_LETTURA, LETTO
-    }
     private final StatoLettura stato;
 
     public static class LibroBuilder{
@@ -37,6 +34,11 @@ public class Libro {
             valutazione = valore;
             return this;
         }//setValutazione
+
+        public LibroBuilder setStato(StatoLettura stato){
+            this.stato = stato;
+            return this;
+        }//setStato
 
         public LibroBuilder setDaLeggere(){
             stato = StatoLettura.DA_LEGGERE;
