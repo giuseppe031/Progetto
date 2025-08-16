@@ -4,6 +4,7 @@ import libro.Libro;
 import libro.StatoLettura;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -28,51 +29,43 @@ public enum Libreria {
                 libri.remove(lib);
             }
         }
-        if(!rimosso) throw new NoSuchElementException("Il libro non è presente dalla libreria");
+        if(!rimosso) throw new IllegalArgumentException("Il libro non è presente dalla libreria");
     }//rimuoviLibro
 
     public void modificaGenere (Libro libro, String nuovoGenere){
         if(nuovoGenere == null) throw new NoSuchElementException("Inserire un nuovo genere!");
         if (libro.getGenere().equals(nuovoGenere)) throw new IllegalArgumentException("Inserisci un genere differente da quello attuale!");
-        ListIterator<Libro> lit = libri.listIterator();
-        while(lit.hasNext()){
-            Libro lib = lit.next();
+        for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
-                Libro libroMod = new Libro.LibroBuilder(libro.getTitolo(),libro.getAutore(),libro.getISBN()).setGenere(nuovoGenere)
-                        .setValutazione(libro.getValutazione()).setStato(libro.getStato()).build();
-                lit.set(libroMod);
-                break;
+                lib.setGenere(nuovoGenere);
             }
         }
     }//modificaGenere
 
     public void modificaValutazione(Libro libro, String nuovaValutazione){
         if(nuovaValutazione==null) throw new NoSuchElementException("Inserire una nuova valutazione!");
-        if(libro.getValutazione().equals(nuovaValutazione)) throw new NoSuchElementException("Inserisci una valutazione differente da quella attuale!");
-        ListIterator<Libro> lit = libri.listIterator();
-        while(lit.hasNext()){
-            Libro lib = lit.next();
+        if(libro.getValutazione().equals(nuovaValutazione)) throw new IllegalArgumentException("Inserisci una valutazione differente da quella attuale!");
+        for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
-                Libro libroMod = new Libro.LibroBuilder(libro.getTitolo(), libro.getAutore(), libro.getISBN())
-                        .setGenere(libro.getGenere()).setValutazione(nuovaValutazione).setStato(libro.getStato()).build();
-                lit.set(libroMod);
-                break;
+                lib.setValutazione(nuovaValutazione);
             }
         }
     }//modificaValutazione
 
     public void modificaStatoLettura(Libro libro, StatoLettura nuovoStato){
         if(libro.getStato().equals(nuovoStato)) throw new IllegalArgumentException("Inserire uno stato diverso da quello attuale!");
-        ListIterator<Libro> lit = libri.listIterator();
-        while(lit.hasNext()){
-            Libro lib = lit.next();
+        for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
-                Libro libroMod = new Libro.LibroBuilder(libro.getTitolo(),libro.getTitolo(),libro.getISBN())
-                        .setGenere(libro.getGenere()).setValutazione(libro.getValutazione()).setStato(nuovoStato).build();
-                lit.set(libroMod);
-                break;
+                lib.setStato(nuovoStato);
             }
         }
     }//modificaStatoLettura
 
+    public void svuotaLibreria(){
+        libri.clear();
+    }//svuotaLibreria
+
+    public List<Libro> getLibri(){
+        return new LinkedList<Libro>(libri);
+    }//getLibro
 }//Libreria

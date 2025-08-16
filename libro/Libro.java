@@ -1,13 +1,15 @@
 package libro;
 
+import java.util.NoSuchElementException;
+
 public class Libro {
 
     private final String titolo;
     private final String autore;
     private final String ISBN;
-    private final String genere;
-    private final String valutazione;
-    private final StatoLettura stato;
+    private  String genere;
+    private  String valutazione;
+    private  StatoLettura stato;
 
     public static class LibroBuilder{
        //parametri principali:
@@ -15,22 +17,25 @@ public class Libro {
         private final String autore;
         private final String ISBN;
         //parametri secondari
-        private  String genere = " ";
-        private  String valutazione = " ";
+        private  String genere = "";
+        private  String valutazione = "";
         private StatoLettura stato;
 
         public LibroBuilder(String titolo, String autore, String ISBN){
+            if(titolo == null || autore == null || ISBN == null) throw new IllegalArgumentException();
             this.titolo = titolo;
             this.autore = autore;
             this.ISBN = ISBN;
         }
 
         public LibroBuilder setGenere(String valore){
+            if(valore == null) throw new NoSuchElementException();
             genere = valore;
             return this;
         }//setGenere
 
         public LibroBuilder setValutazione(String valore){
+            if(valore == null) throw new NoSuchElementException();
             valutazione = valore;
             return this;
         }//setValutazione
@@ -67,6 +72,20 @@ public class Libro {
         this.valutazione = builder.valutazione;
         this.stato = builder.stato;
     }
+
+    public void setGenere(String valore){
+        if(valore == null) throw new IllegalArgumentException();
+        this.genere = valore;
+    }//setGenere
+
+    public void setValutazione(String valore){
+        if(valore == null) throw new IllegalArgumentException();
+        this.valutazione = valore;
+    }//setValutazione
+
+    public void setStato(StatoLettura stato){
+        this.stato = stato;
+    }//setStato
 
     public String getTitolo() {
         return titolo;
