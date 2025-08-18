@@ -5,13 +5,13 @@ import libro.Libro;
 import java.util.List;
 
 public class ContestoFiltro {
-    private FiltraStrategy filtro;
+    private FiltraStrategy strategy;
     public void setFiltro(FiltraStrategy filtro) {
-        this.filtro = filtro;
+        this.strategy = filtro;
     }
     public List<Libro> eseguiFiltraggio (List<Libro> libri, Object arg) {
         if(arg == null)
             return libri;
-        return filtro.filtra(libri,arg);
+        return strategy.filtra(libri,arg);
     }//eseguiFiltraggio
 }//ContestoFiltro
