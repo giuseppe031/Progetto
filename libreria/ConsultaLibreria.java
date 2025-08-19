@@ -8,18 +8,24 @@ import libro.StatoLettura;
 import ordinamento.ContestoOrdinamento;
 import ordinamento.OrdinaPerTitolo;
 import ordinamento.OrdinaPerValutazione;
+import permanenza.ContestoPermanenza;
+import permanenza.PermanenzaStrategy;
+import permanenza.PermanenzaCSV;
 import ricerca.ContestoRicerca;
 import ricerca.RicercaPerAutore;
 import ricerca.RicercaPerISBN;
 import ricerca.RicercaPerTitolo;
 
-import java.util.Enumeration;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InaccessibleObjectException;
 import java.util.List;
 
 public class ConsultaLibreria {
     private final ContestoFiltro c_filtro = new ContestoFiltro();
     private final ContestoRicerca c_ricerca = new ContestoRicerca();
     private final ContestoOrdinamento c_ordinamento = new ContestoOrdinamento();
+    private final ContestoPermanenza c_permanenza = new ContestoPermanenza();
 
     public List<Libro> filtraPerGenere(String genere){
         c_filtro.setFiltro(new FiltraPerGenere());
@@ -55,5 +61,13 @@ public class ConsultaLibreria {
         c_ordinamento.setOrdinamento(new OrdinaPerValutazione());
         return c_ordinamento.eseguiOrdinamento(Libreria.INSTANCE.getLibri());
     }//ordinaPerValutazione
+
+    public void salva(File file) throws IOException{
+        c_permanenza.eseguiSalvataggio(file);
+    }//salva
+
+    public void carica(File file) throws  IOException{
+        c_permanenza.eseguiCaricamento(file);
+    }//carica
     
 }//ConsultaLibreria

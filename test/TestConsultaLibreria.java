@@ -193,12 +193,56 @@ public class TestConsultaLibreria {
 
     @Test
     public void test_ordina_per_titolo(){
-
+        Libro l1 = new Libro.LibroBuilder("C","Autore1","11")
+                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
+        Libro l2 = new Libro.LibroBuilder("A","Autore2","22")
+                .setGenere("Genere2").setValutazione("2").setStato(StatoLettura.DA_LEGGERE).build();
+        Libro l3 = new Libro.LibroBuilder("B","Autore3","33")
+                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
+        Libro l4 = new Libro.LibroBuilder("D","Autore4","44")
+                .setGenere("Genere4").setValutazione("2").setStato(StatoLettura.LETTO).build();
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        Libreria.INSTANCE.aggiungiLibro(l2);
+        Libreria.INSTANCE.aggiungiLibro(l3);
+        Libreria.INSTANCE.aggiungiLibro(l4);
+        List<Libro> libri = consulta_lib.ordinaPerTitolo();
+        assertEquals(4,libri.size());
+        assertEquals("A",libri.get(0).getTitolo());
+        assertEquals("B",libri.get(1).getTitolo());
+        assertEquals("C",libri.get(2).getTitolo());
+        assertEquals("D",libri.get(3).getTitolo());
     }//test_ordina_per_titolo
 
     @Test
     public void test_ordina_per_valutazione(){
-
+        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","11")
+                .setGenere("Genere1").setValutazione("4").setStato(StatoLettura.LETTO).build();
+        Libro l2 = new Libro.LibroBuilder("Titolo2","Autore2","22")
+                .setGenere("Genere2").setValutazione("2").setStato(StatoLettura.DA_LEGGERE).build();
+        Libro l3 = new Libro.LibroBuilder("Titolo3","Autore3","33")
+                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
+        Libro l4 = new Libro.LibroBuilder("Titolo4","Autore4","44")
+                .setGenere("Genere4").setValutazione("1").setStato(StatoLettura.LETTO).build();
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        Libreria.INSTANCE.aggiungiLibro(l2);
+        Libreria.INSTANCE.aggiungiLibro(l3);
+        Libreria.INSTANCE.aggiungiLibro(l4);
+        List<Libro> libri = consulta_lib.ordinaPerValutazione();
+        assertEquals(4,libri.size());
+        assertEquals("1",libri.get(0).getValutazione());
+        assertEquals("1",libri.get(1).getValutazione());
+        assertEquals("2",libri.get(2).getValutazione());
+        assertEquals("4",libri.get(3).getValutazione());
     }//test_ordina_per_valutazione
+
+    @Test
+    public void test_salva(){
+
+    }//test_salva
+
+    @Test
+    public void test_carica(){
+
+    }//test_carica
 
 }//TestFiltraPerGenere
