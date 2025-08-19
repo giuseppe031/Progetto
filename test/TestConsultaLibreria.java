@@ -7,12 +7,13 @@ import libro.StatoLettura;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestConsultaLibreria {
     private final ConsultaLibreria consulta_lib = new ConsultaLibreria();
@@ -236,13 +237,42 @@ public class TestConsultaLibreria {
     }//test_ordina_per_valutazione
 
     @Test
-    public void test_salva(){
-
+    public void test_salva() throws IOException {
+        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","11")
+                .setGenere("Genere1").setValutazione("4").setStato(StatoLettura.LETTO).build();
+        Libro l2 = new Libro.LibroBuilder("Titolo2","Autore2","22")
+                .setGenere("Genere2").setValutazione("2").setStato(StatoLettura.DA_LEGGERE).build();
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        Libreria.INSTANCE.aggiungiLibro(l2);
+        File f = File.createTempFile("libriFile",".csv");
+        f.deleteOnExit();
+        consulta_lib.salva(f);
+        assertTrue(f.exists());
+        assertTrue(f.length() > 0);
     }//test_salva
 
     @Test
-    public void test_carica(){
+    public void test_carica() throws IOException {
+        File f = File.createTempFile("libriFile",".csv");
+        f.deleteOnExit();
+        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","11")
+                .setGenere("Genere1").setValutazione("4").setStato(StatoLettura.LETTO).build();
+        Libro l2 = new Libro.LibroBuilder("Titolo2","Autore2","22")
+                .setGenere("Genere2").setValutazione("2").setStato(StatoLettura.DA_LEGGERE).build();
+
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        Libreria.INSTANCE.aggiungiLibro(l2);
+
+        consulta_lib.salva(f);
+
+        Libreria.INSTANCE.svuotaLibreria();
+        Libreria.INSTANCE.aggiungiLibro(l1);
+
+        consulta_lib.carica(f);
+
+        assertEquals(2,Libreria.INSTANCE.getLibri().size());
 
     }//test_carica
+
 
 }//TestFiltraPerGenere

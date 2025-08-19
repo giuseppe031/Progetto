@@ -39,7 +39,7 @@ public class PermanenzaCSV implements PermanenzaStrategy {
                 try{
                     Libreria.INSTANCE.aggiungiLibro(libro);
                 }catch(IllegalArgumentException e){
-                    System.out.println("Il libro è già presente nella libreria.");
+
                 }
             }
             br.close();

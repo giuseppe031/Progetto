@@ -63,10 +63,12 @@ public class ConsultaLibreria {
     }//ordinaPerValutazione
 
     public void salva(File file) throws IOException{
+        c_permanenza.setPermanenza(new PermanenzaCSV());
         c_permanenza.eseguiSalvataggio(file);
     }//salva
 
     public void carica(File file) throws  IOException{
+        c_permanenza.setPermanenza(new PermanenzaCSV());
         c_permanenza.eseguiCaricamento(file);
     }//carica
     

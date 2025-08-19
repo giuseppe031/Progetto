@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class ContestoPermanenza {
     private PermanenzaStrategy strategy;
-    public void setStrategy(PermanenzaStrategy strategy) {
+    public void setPermanenza(PermanenzaStrategy strategy) {
         this.strategy = strategy;
     }//setStrategy
     public void eseguiSalvataggio(File file) throws IOException {
