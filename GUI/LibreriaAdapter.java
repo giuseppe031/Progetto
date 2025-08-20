@@ -14,6 +14,7 @@ public class LibreriaAdapter extends AbstractTableModel {
         this.libri = libri;
     }
 
+
     @Override
     public int getRowCount() {
         return libri.size();

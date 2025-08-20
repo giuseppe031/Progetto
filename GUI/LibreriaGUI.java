@@ -26,16 +26,28 @@ public class LibreriaGUI extends JFrame {
         JButton bottAggiungi = new JButton("Aggiungi libro");
         JButton bottRimuovi = new JButton("Rimuovi libro");
         JButton bottModGen = new JButton("Modifica genere");
+        bottModGen.setBackground(new Color(87, 173, 94));
         JButton bottModVal = new JButton("Modifica valutazione");
-        JButton bottModStato = new JButton("Modifica stato");
+        bottModVal.setBackground(new Color(87, 173, 94));
+        JButton bottModStato = new JButton("Modifica stato di lettura");
+        bottModStato.setBackground(new Color(87, 173, 94));
+        JButton bottFiltraPerGen = new JButton("Filtra per genere");
+        bottFiltraPerGen.setBackground(new Color(87,137,173));
+        JButton bottFiltraPerStato = new JButton("Filtra per stato di lettura");
+        bottFiltraPerStato.setBackground(new Color(87,137,173));
+        JButton bottMostraLibreria = new JButton("Mostra libreria");
+        bottMostraLibreria.setBackground(new Color(212,111,104));
 
-        JPanel azioni = new JPanel();
+        JPanel azioni = new JPanel(new GridLayout(2,0));
 
         azioni.add(bottAggiungi);
         azioni.add(bottRimuovi);
         azioni.add(bottModGen);
         azioni.add(bottModVal);
         azioni.add(bottModStato);
+        azioni.add(bottFiltraPerGen);
+        azioni.add(bottFiltraPerStato);
+        azioni.add(bottMostraLibreria);
         setLayout(new BorderLayout());
         add(scroll, BorderLayout.CENTER);
         add(azioni, BorderLayout.SOUTH);
@@ -45,6 +57,9 @@ public class LibreriaGUI extends JFrame {
         bottModGen.addActionListener(e->modGenere(e));
         bottModVal.addActionListener(e->modValutazione(e));
         bottModStato.addActionListener(e->modStatoLett(e));
+        bottFiltraPerGen.addActionListener(e -> filtraPerGenere(e));
+        bottMostraLibreria.addActionListener(e->mostraLibreria(e));
+        bottFiltraPerStato.addActionListener(e->filtraPerStato(e));
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900,500);
@@ -125,8 +140,8 @@ public class LibreriaGUI extends JFrame {
             JOptionPane.showMessageDialog(this, "Seleziona un libro da rimuovere");
             return;
         }
-        Libro daRimuovere = modello.getLibro(riga);
         try{
+            Libro daRimuovere = modello.getLibro(riga);
             Libreria.INSTANCE.rimuoviLibro(daRimuovere);
             ricarica();
         }catch(IllegalArgumentException e3){
@@ -169,12 +184,132 @@ public class LibreriaGUI extends JFrame {
     }//modGenere
 
     private void modValutazione(ActionEvent e){
-
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this,"La libreria è vuota, inserisci dei libri prima di modificare la valutazione.");
+            return;
+        }
+        int riga = tabella.getSelectedRow();
+        if(riga < 0){
+            JOptionPane.showMessageDialog(this,"Seleziona un libro da modificare");
+            return;
+        }
+        Libro daModificare = modello.getLibro(riga);
+        String[] possibiliValut = {"1","2","3","4","5"};
+        JComboBox<String> comboValutazione = new JComboBox<>(possibiliValut);
+        JPanel panel = new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("Nuova valutazione:"));
+        panel.add(comboValutazione);
+        int ris = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Modifica valutazione",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (ris == JOptionPane.OK_OPTION){
+            String nuovaVal = (String) comboValutazione.getSelectedItem();
+            Libreria.INSTANCE.modificaValutazione(daModificare,nuovaVal);
+            ricarica();
+        }
     }//modValutazione
 
     private void modStatoLett(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this,"La libreria è vuota, inserisci dei libri prima di modificare lo stato di lettura.");
+            return;
+        }
+        int riga = tabella.getSelectedRow();
+        if(riga < 0){
+            JOptionPane.showMessageDialog(this,"Seleziona un libro da modificare");
+            return;
+        }
+        Libro daModificare = modello.getLibro(riga);
 
+        JComboBox<StatoLettura> comboStato = new JComboBox<>(StatoLettura.values());
+        JPanel panel = new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("Nuovo stato di lettura:"));
+        panel.add(comboStato);
+        int ris = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Modifica stato di lettura",
+                JOptionPane.OK_CANCEL_OPTION);
+        if (ris == JOptionPane.OK_OPTION){
+            StatoLettura nuovoStato = (StatoLettura) comboStato.getSelectedItem();
+            Libreria.INSTANCE.modificaStatoLettura(daModificare,nuovoStato);
+            ricarica();
+        }
     }//modStatoLett
+
+    private void filtraPerGenere(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+        JTextField campoGen = new JTextField();
+        JPanel panel = new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("Genere:"));
+        panel.add(campoGen);
+
+        int ris = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Filtra per genere",
+                JOptionPane.OK_CANCEL_OPTION);
+
+        if (ris == JOptionPane.OK_OPTION){
+            try{
+                String gen = campoGen.getText();
+                List<Libro> filtrati = consulta_lib.filtraPerGenere(gen.trim());
+
+                this.modello = new LibreriaAdapter(filtrati);
+                this.tabella.setModel(this.modello);
+                this.tabella.revalidate();
+                this.tabella.repaint();
+            }catch(IllegalArgumentException e5){
+                JOptionPane.showMessageDialog(this,"Errore: "+e5.getMessage());
+                return;
+            }
+
+        }
+
+    }//filtraPerGenere
+
+    private void filtraPerStato(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+        JComboBox<StatoLettura> comboStato = new JComboBox<>(StatoLettura.values());
+        JPanel panel = new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("Stato di lettura:"));
+        panel.add(comboStato);
+
+        int ris = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Filtra per stato di lettura",
+                JOptionPane.OK_CANCEL_OPTION);
+        if(ris == JOptionPane.OK_OPTION){
+            try{
+                StatoLettura stato = (StatoLettura) comboStato.getSelectedItem();
+                List<Libro> filtrati = consulta_lib.filtraPerStatoDiLettura(stato);
+                this.modello = new LibreriaAdapter(filtrati);
+                this.tabella.setModel(this.modello);
+                this.tabella.revalidate();
+                this.tabella.repaint();
+            }catch(IllegalArgumentException e5){
+                JOptionPane.showMessageDialog(this,"Errore: "+e5.getMessage());
+                return;
+            }
+
+        }
+    }//filtraPerStato
+
+    private void mostraLibreria(ActionEvent e){
+        this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());
+        this.tabella.setModel(this.modello);
+        this.tabella.revalidate();
+        this.tabella.repaint();
+    }//mostraLibreria
 
 
 }//LibreriaGUI

@@ -63,6 +63,17 @@ public class TestConsultaLibreria {
     }//test_genere_null
 
     @Test
+    public void test_genere_non_presente(){
+        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","11")
+                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
+        Libro l2 = new Libro.LibroBuilder("Titolo2","Autore2","22")
+                .setGenere("Genere2").setValutazione("2").setStato(StatoLettura.LETTO).build();
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        Libreria.INSTANCE.aggiungiLibro(l2);
+        assertThrows(IllegalArgumentException.class,()->consulta_lib.filtraPerGenere("Genere3"));
+    }//test_genere_non_presente
+
+    @Test
     public void test_filtra_per_stato_di_lettura(){
         Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","11")
                 .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();

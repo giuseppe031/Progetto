@@ -85,6 +85,20 @@ public class TestLibreria {
     }//test_modifica_genere
 
     @Test
+    public void test_modifica_genere_null(){
+        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","12345")
+                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
+        Libro l2 = new Libro.LibroBuilder("Titolo1","Autore1","345")
+                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
+
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        Libreria.INSTANCE.aggiungiLibro(l2);
+
+        assertThrows(NoSuchElementException.class,()-> Libreria.INSTANCE.modificaGenere(l2,""));
+        assertThrows(NoSuchElementException.class, ()-> Libreria.INSTANCE.modificaGenere(l1,null));
+    }//test_modifica_genere_null
+
+    @Test
     public void test_modica_valutazione(){
         Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","12345")
                 .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();

@@ -33,7 +33,7 @@ public enum Libreria {
     }//rimuoviLibro
 
     public void modificaGenere (Libro libro, String nuovoGenere){
-        if(nuovoGenere == null) throw new NoSuchElementException("Inserire un nuovo genere!");
+        if(nuovoGenere == null || nuovoGenere.trim().isEmpty()) throw new NoSuchElementException("Inserire un nuovo genere!");
         for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
                 lib.setGenere(nuovoGenere);
@@ -42,7 +42,7 @@ public enum Libreria {
     }//modificaGenere
 
     public void modificaValutazione(Libro libro, String nuovaValutazione){
-        if(nuovaValutazione==null) throw new NoSuchElementException("Inserire una nuova valutazione!");
+        if(nuovaValutazione==null || nuovaValutazione.trim().isEmpty()) throw new NoSuchElementException("Inserire una nuova valutazione!");
         for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
                 lib.setValutazione(nuovaValutazione);
