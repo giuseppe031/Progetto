@@ -14,7 +14,7 @@ public class RicercaPerAutore implements RicercaStrategy{
         boolean trovato = false;
         List<Libro> trovati = new LinkedList<>();
         for(Libro lib : libri){
-            if(lib.getAutore().equals(autore)){
+            if(lib.getAutore().equalsIgnoreCase(autore)){
                 trovato = true;
                 trovati.add(lib);
             }

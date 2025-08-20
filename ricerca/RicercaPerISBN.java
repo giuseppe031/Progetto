@@ -14,7 +14,7 @@ public class RicercaPerISBN implements RicercaStrategy{
        boolean trovato = false;
        List<Libro> trovati = new LinkedList<>();
        for(Libro lib : libri){
-           if(lib.getISBN().equals(ISBN)){
+           if(lib.getISBN().equalsIgnoreCase(ISBN)){
                trovato=true;
                trovati.add(lib);
            }

@@ -17,7 +17,7 @@ public class LibreriaGUI extends JFrame {
     private LibreriaAdapter modello;
 
     public LibreriaGUI(){
-        super("Libreria");
+        super("Libreria Fabiano Giuseppe 240136");
         List<Libro> libri = Libreria.INSTANCE.getLibri();
         modello = new LibreriaAdapter(libri);
         tabella = new JTable(modello);
@@ -35,10 +35,14 @@ public class LibreriaGUI extends JFrame {
         bottFiltraPerGen.setBackground(new Color(87,137,173));
         JButton bottFiltraPerStato = new JButton("Filtra per stato di lettura");
         bottFiltraPerStato.setBackground(new Color(87,137,173));
-        JButton bottMostraLibreria = new JButton("Mostra libreria");
+        JButton bottMostraLibreria = new JButton("MOSTRA LIBRERIA");
         bottMostraLibreria.setBackground(new Color(212,111,104));
-
+        JButton bottOrdPerTit = new JButton("Ordina per titolo");
+        bottOrdPerTit.setBackground(new Color(124,127,130));
+        JButton bottOrdPerValut = new JButton("Ordina per valutazione");
+        bottOrdPerValut.setBackground(new Color(124,127,130));
         JPanel azioni = new JPanel(new GridLayout(2,0));
+
 
         azioni.add(bottAggiungi);
         azioni.add(bottRimuovi);
@@ -47,7 +51,10 @@ public class LibreriaGUI extends JFrame {
         azioni.add(bottModStato);
         azioni.add(bottFiltraPerGen);
         azioni.add(bottFiltraPerStato);
+        azioni.add(bottOrdPerTit);
+        azioni.add(bottOrdPerValut);
         azioni.add(bottMostraLibreria);
+
         setLayout(new BorderLayout());
         add(scroll, BorderLayout.CENTER);
         add(azioni, BorderLayout.SOUTH);
@@ -60,6 +67,8 @@ public class LibreriaGUI extends JFrame {
         bottFiltraPerGen.addActionListener(e -> filtraPerGenere(e));
         bottMostraLibreria.addActionListener(e->mostraLibreria(e));
         bottFiltraPerStato.addActionListener(e->filtraPerStato(e));
+        bottOrdPerTit.addActionListener(e->ordPerTit(e));
+        bottOrdPerValut.addActionListener(e->ordPerVal(e));
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900,500);
@@ -303,6 +312,31 @@ public class LibreriaGUI extends JFrame {
 
         }
     }//filtraPerStato
+
+    private void ordPerTit(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+        List<Libro> ordinati = consulta_lib.ordinaPerTitolo();
+        this.modello = new LibreriaAdapter(ordinati);
+        this.tabella.setModel(this.modello);
+        this.tabella.revalidate();
+        this.tabella.repaint();
+
+    }//ordPerTit
+
+    private void ordPerVal(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+        List<Libro> ordinati = consulta_lib.ordinaPerValutazione();
+        this.modello = new LibreriaAdapter(ordinati);
+        this.tabella.setModel(this.modello);
+        this.tabella.revalidate();
+        this.tabella.repaint();
+    }//ordPerVal
 
     private void mostraLibreria(ActionEvent e){
         this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());

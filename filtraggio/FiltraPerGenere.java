@@ -13,7 +13,7 @@ public class FiltraPerGenere implements FiltraStrategy{
         boolean trovato = false;
         LinkedList<Libro> lib_filtr = new LinkedList<Libro>();
         for(Libro lib:libri){
-            if(lib.getGenere().equals(arg)){
+            if(lib.getGenere().equalsIgnoreCase((String)arg)){
                 lib_filtr.add(lib);
                 trovato = true;
             }

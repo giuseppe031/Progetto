@@ -14,7 +14,7 @@ public class RicercaPerTitolo implements RicercaStrategy{
        boolean trovato = false;
        List<Libro> trovati = new ArrayList<Libro>();
        for(Libro lib : libri) {
-           if(lib.getTitolo().equals(titolo)){
+           if(lib.getTitolo().equalsIgnoreCase(titolo)){
                trovati.add(lib);
                trovato = true;
            }
