@@ -85,14 +85,6 @@ public class TestLibreria {
     }//test_modifica_genere
 
     @Test
-    public void test_genere_non_modificato(){
-        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","12345")
-                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
-        Libreria.INSTANCE.aggiungiLibro(l1);
-        assertThrows(IllegalArgumentException.class,()-> Libreria.INSTANCE.modificaGenere(l1,"Genere1"));
-    }//test_genere_non_modificato
-
-    @Test
     public void test_modica_valutazione(){
         Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","12345")
                 .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
@@ -102,14 +94,6 @@ public class TestLibreria {
     }//test_modifica_valutazione
 
     @Test
-    public void test_valutazione_non_modificata(){
-        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","12345")
-                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
-        Libreria.INSTANCE.aggiungiLibro(l1);
-        assertThrows(IllegalArgumentException.class,()-> Libreria.INSTANCE.modificaValutazione(l1,"1"));
-    }//test_valutazione_non_modificata
-
-    @Test
     public void test_modifica_stato_lettura() {
         Libro l1 = new Libro.LibroBuilder("Titolo1", "Autore1", "12345")
                 .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
@@ -117,14 +101,6 @@ public class TestLibreria {
         Libreria.INSTANCE.modificaStatoLettura(l1, StatoLettura.IN_LETTURA);
         assertEquals(StatoLettura.IN_LETTURA,l1.getStato());
     }
-
-    @Test
-    public void test_stato_lettura_non_modificato(){
-        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","12345")
-                .setGenere("Genere1").setValutazione("1").setStato(StatoLettura.LETTO).build();
-        Libreria.INSTANCE.aggiungiLibro(l1);
-        assertThrows(IllegalArgumentException.class,()->Libreria.INSTANCE.modificaStatoLettura(l1,StatoLettura.LETTO));
-    }//test_stato_lettura_non_modificato
 
 
 }//TestLibreria

@@ -34,7 +34,6 @@ public enum Libreria {
 
     public void modificaGenere (Libro libro, String nuovoGenere){
         if(nuovoGenere == null) throw new NoSuchElementException("Inserire un nuovo genere!");
-        if (libro.getGenere().equals(nuovoGenere)) throw new IllegalArgumentException("Inserisci un genere differente da quello attuale!");
         for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
                 lib.setGenere(nuovoGenere);
@@ -44,7 +43,6 @@ public enum Libreria {
 
     public void modificaValutazione(Libro libro, String nuovaValutazione){
         if(nuovaValutazione==null) throw new NoSuchElementException("Inserire una nuova valutazione!");
-        if(libro.getValutazione().equals(nuovaValutazione)) throw new IllegalArgumentException("Inserisci una valutazione differente da quella attuale!");
         for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
                 lib.setValutazione(nuovaValutazione);
@@ -53,7 +51,6 @@ public enum Libreria {
     }//modificaValutazione
 
     public void modificaStatoLettura(Libro libro, StatoLettura nuovoStato){
-        if(libro.getStato().equals(nuovoStato)) throw new IllegalArgumentException("Inserire uno stato diverso da quello attuale!");
         for(Libro lib : libri){
             if(lib.getISBN().equals(libro.getISBN())){
                 lib.setStato(nuovoStato);
