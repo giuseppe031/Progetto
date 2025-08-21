@@ -8,6 +8,7 @@ import libro.StatoLettura;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -49,9 +50,9 @@ public class LibreriaGUI extends JFrame {
         bottRicercaPerISBN.setBackground(new Color(207,198,39));
         JButton bottRicercaPerTitolo = new JButton("Ricerca per titolo");
         bottRicercaPerTitolo.setBackground(new Color(207,198,39));
-        JButton bottCarica = new JButton("Carica");
+        JButton bottCarica = new JButton("Carica CSV");
         bottCarica.setBackground(new Color(227,227,227));
-        JButton bottSalva = new JButton("Salva");
+        JButton bottSalva = new JButton("Salva CSV");
         bottSalva.setBackground(new Color(227,227,227));
 
         JPanel azioni = new JPanel(new GridLayout(3,0));
@@ -90,6 +91,9 @@ public class LibreriaGUI extends JFrame {
         bottRicercaPerAutore.addActionListener(e->ricercaPerAutore(e));
         bottRicercaPerISBN.addActionListener(e->ricercaPerISBN(e));
         bottRicercaPerTitolo.addActionListener(e->ricercaPerTitolo(e));
+        bottSalva.addActionListener(e->salvaCSV(e));
+        bottCarica.addActionListener(e->caricaCSV(e));
+
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900,500);
@@ -458,14 +462,56 @@ public class LibreriaGUI extends JFrame {
         }
     }//ricercaPerTitolo
 
+    private void salvaCSV(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+
+        String nomeFile = JOptionPane.showInputDialog(
+                this,
+                "Inserisci il nome del file CSV dove vuoi salvare la tua libreria: ",
+                "salva.csv"
+        );
+        if(nomeFile==null || nomeFile.trim().isEmpty()){
+            return;
+        }
+
+        File file = new File(nomeFile);
+        try{
+            consulta_lib.salva(file);
+            JOptionPane.showMessageDialog(this, "Salvataggio avvenuto con successo! " +
+                    "Ora la tua libreria si trova in "+file.getAbsolutePath());
+        }catch(Exception e9){
+            JOptionPane.showMessageDialog(this,"Errore: "+e9.getMessage());
+        }
+
+
+    }//salva
+
+    private void caricaCSV(ActionEvent e){
+        String nomeFile = JOptionPane.showInputDialog(
+                this,
+                "Inserisci il nome del file CSV dalla quale vuoi caricare la tua libreria: ",
+                "salva.csv"
+        );
+        if(nomeFile==null || nomeFile.trim().isEmpty()){
+            return;
+        }
+        File file = new File(nomeFile);
+        try{
+            consulta_lib.carica(file);
+            ricarica();
+        }catch(Exception e10){
+            JOptionPane.showMessageDialog(this,"Errore: "+e10.getMessage());
+        }
+    }//carica
+
     private void mostraLibreria(ActionEvent e){
         this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());
         this.tabella.setModel(this.modello);
         this.tabella.revalidate();
         this.tabella.repaint();
     }//mostraLibreria
-
-
-
 
 }//LibreriaGUI
