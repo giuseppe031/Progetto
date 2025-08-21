@@ -19,7 +19,7 @@ public class RicercaPerTitolo implements RicercaStrategy{
                trovato = true;
            }
        }
-       if(!trovato) throw new NoSuchElementException("Titolo non trovato");
+       if(!trovato) throw new NoSuchElementException("Titolo non presente nella libreria");
        return trovati;
     }//ricerca
 

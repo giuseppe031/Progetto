@@ -20,7 +20,7 @@ public class RicercaPerISBN implements RicercaStrategy{
            }
 
        }
-       if(!trovato) throw new NoSuchElementException("ISBN non trovato");
+       if(!trovato) throw new NoSuchElementException("ISBN non presente nella libreria");
        return trovati;
     }//ricerca
 

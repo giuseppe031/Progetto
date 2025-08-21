@@ -24,7 +24,9 @@ public class LibreriaGUI extends JFrame {
         JScrollPane scroll = new JScrollPane(tabella);
 
         JButton bottAggiungi = new JButton("Aggiungi libro");
+        bottAggiungi.setBackground(new Color(227,227,227));
         JButton bottRimuovi = new JButton("Rimuovi libro");
+        bottRimuovi.setBackground(new Color(227,227,227));
         JButton bottModGen = new JButton("Modifica genere");
         bottModGen.setBackground(new Color(87, 173, 94));
         JButton bottModVal = new JButton("Modifica valutazione");
@@ -38,11 +40,21 @@ public class LibreriaGUI extends JFrame {
         JButton bottMostraLibreria = new JButton("MOSTRA LIBRERIA");
         bottMostraLibreria.setBackground(new Color(212,111,104));
         JButton bottOrdPerTit = new JButton("Ordina per titolo");
-        bottOrdPerTit.setBackground(new Color(124,127,130));
+        bottOrdPerTit.setBackground(new Color(175,179,176));
         JButton bottOrdPerValut = new JButton("Ordina per valutazione");
-        bottOrdPerValut.setBackground(new Color(124,127,130));
-        JPanel azioni = new JPanel(new GridLayout(2,0));
+        bottOrdPerValut.setBackground(new Color(175,179,176));
+        JButton bottRicercaPerAutore = new JButton("Ricerca per autore");
+        bottRicercaPerAutore.setBackground(new Color(207,198,39));
+        JButton bottRicercaPerISBN = new JButton("Ricerca per ISBN");
+        bottRicercaPerISBN.setBackground(new Color(207,198,39));
+        JButton bottRicercaPerTitolo = new JButton("Ricerca per titolo");
+        bottRicercaPerTitolo.setBackground(new Color(207,198,39));
+        JButton bottCarica = new JButton("Carica");
+        bottCarica.setBackground(new Color(227,227,227));
+        JButton bottSalva = new JButton("Salva");
+        bottSalva.setBackground(new Color(227,227,227));
 
+        JPanel azioni = new JPanel(new GridLayout(3,0));
 
         azioni.add(bottAggiungi);
         azioni.add(bottRimuovi);
@@ -53,7 +65,13 @@ public class LibreriaGUI extends JFrame {
         azioni.add(bottFiltraPerStato);
         azioni.add(bottOrdPerTit);
         azioni.add(bottOrdPerValut);
+        azioni.add(bottRicercaPerAutore);
+        azioni.add(bottRicercaPerISBN);
+        azioni.add(bottRicercaPerTitolo);
+        azioni.add(bottCarica);
+        azioni.add(bottSalva);
         azioni.add(bottMostraLibreria);
+
 
         setLayout(new BorderLayout());
         add(scroll, BorderLayout.CENTER);
@@ -69,6 +87,9 @@ public class LibreriaGUI extends JFrame {
         bottFiltraPerStato.addActionListener(e->filtraPerStato(e));
         bottOrdPerTit.addActionListener(e->ordPerTit(e));
         bottOrdPerValut.addActionListener(e->ordPerVal(e));
+        bottRicercaPerAutore.addActionListener(e->ricercaPerAutore(e));
+        bottRicercaPerISBN.addActionListener(e->ricercaPerISBN(e));
+        bottRicercaPerTitolo.addActionListener(e->ricercaPerTitolo(e));
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900,500);
@@ -338,12 +359,113 @@ public class LibreriaGUI extends JFrame {
         this.tabella.repaint();
     }//ordPerVal
 
+    private void ricercaPerAutore(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+        JTextField campoGen = new JTextField();
+        JPanel panel = new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("Autore:"));
+        panel.add(campoGen);
+
+        int ris = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Ricerca per autore",
+                JOptionPane.OK_CANCEL_OPTION);
+
+        if (ris == JOptionPane.OK_OPTION){
+            try{
+                String gen = campoGen.getText();
+                List<Libro> filtrati = consulta_lib.ricercaPerAutore(gen.trim());
+
+                this.modello = new LibreriaAdapter(filtrati);
+                this.tabella.setModel(this.modello);
+                this.tabella.revalidate();
+                this.tabella.repaint();
+            }catch(NoSuchElementException e6){
+                JOptionPane.showMessageDialog(this,"Errore: "+e6.getMessage());
+                return;
+            }
+
+        }
+    }//ricercaPerAutore
+
+    private void ricercaPerISBN(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+        JTextField campoGen = new JTextField();
+        JPanel panel = new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("ISBN:"));
+        panel.add(campoGen);
+
+        int ris = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Ricerca per ISBN",
+                JOptionPane.OK_CANCEL_OPTION);
+
+        if (ris == JOptionPane.OK_OPTION){
+            try{
+                String gen = campoGen.getText();
+                List<Libro> filtrati = consulta_lib.ricercaPerISBN(gen.trim());
+
+                this.modello = new LibreriaAdapter(filtrati);
+                this.tabella.setModel(this.modello);
+                this.tabella.revalidate();
+                this.tabella.repaint();
+            }catch(NoSuchElementException e7){
+                JOptionPane.showMessageDialog(this,"Errore: "+e7.getMessage());
+                return;
+            }
+
+        }
+    }//ricercaPerISBN
+
+    private void ricercaPerTitolo(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+            return;
+        }
+        JTextField campoGen = new JTextField();
+        JPanel panel = new JPanel(new GridLayout(0,2));
+        panel.add(new JLabel("Titolo:"));
+        panel.add(campoGen);
+
+        int ris = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Ricerca per titolo",
+                JOptionPane.OK_CANCEL_OPTION);
+
+        if (ris == JOptionPane.OK_OPTION){
+            try{
+                String gen = campoGen.getText();
+                List<Libro> filtrati = consulta_lib.ricercaPerTitolo(gen.trim());
+
+                this.modello = new LibreriaAdapter(filtrati);
+                this.tabella.setModel(this.modello);
+                this.tabella.revalidate();
+                this.tabella.repaint();
+            }catch(NoSuchElementException e8){
+                JOptionPane.showMessageDialog(this,"Errore: "+e8.getMessage());
+                return;
+            }
+
+        }
+    }//ricercaPerTitolo
+
     private void mostraLibreria(ActionEvent e){
         this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());
         this.tabella.setModel(this.modello);
         this.tabella.revalidate();
         this.tabella.repaint();
     }//mostraLibreria
+
+
 
 
 }//LibreriaGUI

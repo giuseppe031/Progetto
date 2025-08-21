@@ -19,7 +19,7 @@ public class RicercaPerAutore implements RicercaStrategy{
                 trovati.add(lib);
             }
         }
-        if(!trovato) throw new NoSuchElementException("Autore non trovato");
+        if(!trovato) throw new NoSuchElementException("Autore non presente nella libreria");
         return trovati;
     }//ricerca
 }//RicercaPerAutore
