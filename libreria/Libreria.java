@@ -23,10 +23,12 @@ public enum Libreria {
 
     public void rimuoviLibro (Libro libro) {
         boolean rimosso = false;
-        for(Libro lib : libri){
-            if(lib.getISBN().equals(libro.getISBN())){
+        ListIterator<Libro> li = libri.listIterator();
+        while(li.hasNext()) {
+            Libro lib = li.next();
+            if(lib.getISBN().equals(libro.getISBN())) {
+                li.remove();
                 rimosso = true;
-                libri.remove(lib);
             }
         }
         if(!rimosso) throw new IllegalArgumentException("Il libro non è presente dalla libreria");
