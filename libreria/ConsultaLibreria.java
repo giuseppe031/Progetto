@@ -1,5 +1,6 @@
 package libreria;
 
+import com.opencsv.exceptions.CsvValidationException;
 import filtraggio.ContestoFiltro;
 import filtraggio.FiltraPerGenere;
 import filtraggio.FiltraPerStatoDiLettura;
@@ -67,7 +68,7 @@ public class ConsultaLibreria {
         c_permanenza.eseguiSalvataggio(file);
     }//salva
 
-    public void carica(File file) throws  IOException{
+    public void carica(File file) throws  IOException, CsvValidationException {
         c_permanenza.setPermanenza(new PermanenzaCSV());
         c_permanenza.eseguiCaricamento(file);
     }//carica

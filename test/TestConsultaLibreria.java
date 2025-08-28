@@ -1,5 +1,6 @@
 package test;
 
+import com.opencsv.exceptions.CsvValidationException;
 import libreria.ConsultaLibreria;
 import libreria.Libreria;
 import libro.Libro;
@@ -263,7 +264,7 @@ public class TestConsultaLibreria {
     }//test_salva
 
     @Test
-    public void test_carica() throws IOException {
+    public void test_carica() throws IOException , CsvValidationException {
         File f = File.createTempFile("libriFile",".csv");
         f.deleteOnExit();
         Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","11")
@@ -273,17 +274,28 @@ public class TestConsultaLibreria {
 
         Libreria.INSTANCE.aggiungiLibro(l1);
         Libreria.INSTANCE.aggiungiLibro(l2);
-
         consulta_lib.salva(f);
-
         Libreria.INSTANCE.svuotaLibreria();
-        Libreria.INSTANCE.aggiungiLibro(l1);
-
         consulta_lib.carica(f);
-
         assertEquals(2,Libreria.INSTANCE.getLibri().size());
 
     }//test_carica
+
+    @Test
+    public void test_carica_ISBN_gia_presente() throws IOException , CsvValidationException{
+        File f = File.createTempFile("libriFile",".csv");
+        f.deleteOnExit();
+        Libro l1 = new Libro.LibroBuilder("Titolo1","Autore1","11")
+                .setGenere("Genere1").setValutazione("4").setStato(StatoLettura.LETTO).build();
+        Libro l2 = new Libro.LibroBuilder("Titolo2","Autore2","22")
+                .setGenere("Genere2").setValutazione("2").setStato(StatoLettura.DA_LEGGERE).build();
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        Libreria.INSTANCE.aggiungiLibro(l2);
+        consulta_lib.salva(f);
+        Libreria.INSTANCE.svuotaLibreria();
+        Libreria.INSTANCE.aggiungiLibro(l1);
+        assertThrows(IllegalArgumentException.class,()->consulta_lib.carica(f));
+    }//test_carica_ISBN_gia_presente
 
 
 }//TestFiltraPerGenere

@@ -1,5 +1,6 @@
 package GUI;
 
+import com.opencsv.exceptions.CsvValidationException;
 import libreria.ConsultaLibreria;
 import libreria.Libreria;
 import libro.Libro;
@@ -29,21 +30,22 @@ public class LibreriaGUI extends JFrame {
         JButton bottRimuovi = new JButton("Rimuovi libro");
         bottRimuovi.setBackground(new Color(227,227,227));
         JButton bottModGen = new JButton("Modifica genere");
-        bottModGen.setBackground(new Color(87, 173, 94));
+        bottModGen.setBackground(new Color(109, 204, 94));
         JButton bottModVal = new JButton("Modifica valutazione");
-        bottModVal.setBackground(new Color(87, 173, 94));
+        bottModVal.setBackground(new Color(109, 204, 94));
         JButton bottModStato = new JButton("Modifica stato di lettura");
-        bottModStato.setBackground(new Color(87, 173, 94));
+        bottModStato.setBackground(new Color(109, 204, 94));
         JButton bottFiltraPerGen = new JButton("Filtra per genere");
-        bottFiltraPerGen.setBackground(new Color(87,137,173));
+        bottFiltraPerGen.setBackground(new Color(100, 175, 232));
         JButton bottFiltraPerStato = new JButton("Filtra per stato di lettura");
-        bottFiltraPerStato.setBackground(new Color(87,137,173));
+        bottFiltraPerStato.setBackground(new Color(100, 175, 232));
         JButton bottMostraLibreria = new JButton("MOSTRA LIBRERIA");
-        bottMostraLibreria.setBackground(new Color(212,111,104));
+        bottMostraLibreria.setBackground(new Color(199, 101, 105));
+        bottMostraLibreria.setForeground(Color.WHITE);
         JButton bottOrdPerTit = new JButton("Ordina per titolo");
-        bottOrdPerTit.setBackground(new Color(175,179,176));
+        bottOrdPerTit.setBackground(new Color(175, 186, 182));
         JButton bottOrdPerValut = new JButton("Ordina per valutazione");
-        bottOrdPerValut.setBackground(new Color(175,179,176));
+        bottOrdPerValut.setBackground(new Color(175, 186, 182));
         JButton bottRicercaPerAutore = new JButton("Ricerca per autore");
         bottRicercaPerAutore.setBackground(new Color(207,198,39));
         JButton bottRicercaPerISBN = new JButton("Ricerca per ISBN");
@@ -54,8 +56,11 @@ public class LibreriaGUI extends JFrame {
         bottCarica.setBackground(new Color(227,227,227));
         JButton bottSalva = new JButton("Salva CSV");
         bottSalva.setBackground(new Color(227,227,227));
+        JButton bottSvuota = new JButton("SVUOTA LIBRERIA");
+        bottSvuota.setBackground(new Color(199, 101, 105));
+        bottSvuota.setForeground(Color.WHITE);
 
-        JPanel azioni = new JPanel(new GridLayout(3,0));
+        JPanel azioni = new JPanel(new GridLayout(4,1));
 
         azioni.add(bottAggiungi);
         azioni.add(bottRimuovi);
@@ -71,6 +76,7 @@ public class LibreriaGUI extends JFrame {
         azioni.add(bottRicercaPerTitolo);
         azioni.add(bottCarica);
         azioni.add(bottSalva);
+        azioni.add(bottSvuota);
         azioni.add(bottMostraLibreria);
 
 
@@ -93,6 +99,7 @@ public class LibreriaGUI extends JFrame {
         bottRicercaPerTitolo.addActionListener(e->ricercaPerTitolo(e));
         bottSalva.addActionListener(e->salvaCSV(e));
         bottCarica.addActionListener(e->caricaCSV(e));
+        bottSvuota.addActionListener(e->svuotaLibreria(e));
 
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -471,7 +478,7 @@ public class LibreriaGUI extends JFrame {
         String nomeFile = JOptionPane.showInputDialog(
                 this,
                 "Inserisci il nome del file CSV dove vuoi salvare la tua libreria: ",
-                "salva.csv"
+                "miaLibreria.csv"
         );
         if(nomeFile==null || nomeFile.trim().isEmpty()){
             return;
@@ -493,7 +500,7 @@ public class LibreriaGUI extends JFrame {
         String nomeFile = JOptionPane.showInputDialog(
                 this,
                 "Inserisci il nome del file CSV dalla quale vuoi caricare la tua libreria: ",
-                "salva.csv"
+                "miaLibreria.csv"
         );
         if(nomeFile==null || nomeFile.trim().isEmpty()){
             return;
@@ -506,6 +513,17 @@ public class LibreriaGUI extends JFrame {
             JOptionPane.showMessageDialog(this,"Errore: "+e10.getMessage());
         }
     }//carica
+
+    private void svuotaLibreria(ActionEvent e){
+        if(tabella.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Libreria vuota!");
+        }
+        Libreria.INSTANCE.svuotaLibreria();
+        this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());
+        this.tabella.setModel(this.modello);
+        this.tabella.revalidate();
+        this.tabella.repaint();
+    }//svuotaLibreria
 
     private void mostraLibreria(ActionEvent e){
         this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());

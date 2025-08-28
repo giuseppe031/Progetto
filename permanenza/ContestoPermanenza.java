@@ -1,5 +1,7 @@
 package permanenza;
 
+import com.opencsv.exceptions.CsvValidationException;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -11,7 +13,7 @@ public class ContestoPermanenza {
     public void eseguiSalvataggio(File file) throws IOException {
         strategy.salva(file);
     }//eseguiSalvataggio
-    public void eseguiCaricamento(File file) throws IOException{
+    public void eseguiCaricamento(File file) throws IOException, CsvValidationException {
         strategy.carica(file);
     }//eseguiCaricamento
 }//ContestoPermanenza
