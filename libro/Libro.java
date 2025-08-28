@@ -22,7 +22,7 @@ public class Libro {
         private StatoLettura stato;
 
         public LibroBuilder(String titolo, String autore, String ISBN){
-            if(titolo == null || autore == null || ISBN == null) throw new IllegalArgumentException();
+            if(titolo == null || titolo.isEmpty() || autore == null || autore.isEmpty() || ISBN == null || ISBN.isEmpty()) throw new IllegalArgumentException();
             this.titolo = titolo;
             this.autore = autore;
             this.ISBN = ISBN;
@@ -64,7 +64,7 @@ public class Libro {
         }//build
     }//LibroBuilder
 
-    public Libro (LibroBuilder builder){
+    private Libro (LibroBuilder builder){
         this.titolo = builder.titolo;
         this.autore = builder.autore;
         this.ISBN = builder.ISBN;

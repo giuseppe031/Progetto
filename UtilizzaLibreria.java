@@ -1,4 +1,4 @@
-package GUI;
+import GUI.LibreriaGUI;
 
 public class UtilizzaLibreria {
     public static void main(String[] args) {
