@@ -60,6 +60,7 @@ public enum Libreria {
         }
     }//modificaStatoLettura
 
+    //Metodi ausiliari
     public void svuotaLibreria(){
         libri.clear();
     }//svuotaLibreria
@@ -67,4 +68,12 @@ public enum Libreria {
     public List<Libro> getLibri(){
         return new LinkedList<Libro>(libri);
     }//getLibro
+
+    public boolean contiene(Libro libro){
+        for(Libro lib : libri){
+            if(lib.getISBN().equals(libro.getISBN()))
+                return true;
+        }
+        return false;
+    }//contiene
 }//Libreria
