@@ -18,6 +18,7 @@ public class LibreriaGUI extends JFrame {
     private final ConsultaLibreria consulta_lib = new ConsultaLibreria();
     private final JTable tabella;
     private LibreriaAdapter modello;
+    private boolean caricato=false;
 
     public LibreriaGUI(){
         super("Libreria Fabiano Giuseppe 240136");
@@ -57,11 +58,9 @@ public class LibreriaGUI extends JFrame {
         bottCarica.setBackground(new Color(227,227,227));
         JButton bottSalva = new JButton("Salva CSV");
         bottSalva.setBackground(new Color(227,227,227));
-        JButton bottSvuota = new JButton("SVUOTA LIBRERIA");
-        bottSvuota.setBackground(new Color(199, 101, 105));
-        bottSvuota.setForeground(Color.WHITE);
 
-        JPanel azioni = new JPanel(new GridLayout(4,1));
+
+        JPanel azioni = new JPanel(new GridLayout(3,1));
 
         azioni.add(bottAggiungi);
         azioni.add(bottRimuovi);
@@ -77,7 +76,6 @@ public class LibreriaGUI extends JFrame {
         azioni.add(bottRicercaPerTitolo);
         azioni.add(bottCarica);
         azioni.add(bottSalva);
-        azioni.add(bottSvuota);
         azioni.add(bottMostraLibreria);
 
 
@@ -100,7 +98,7 @@ public class LibreriaGUI extends JFrame {
         bottRicercaPerTitolo.addActionListener(e->ricercaPerTitolo(e));
         bottSalva.addActionListener(e->salvaCSV(e));
         bottCarica.addActionListener(e->caricaCSV(e));
-        bottSvuota.addActionListener(e->svuotaLibreria(e));
+
 
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -487,14 +485,26 @@ public class LibreriaGUI extends JFrame {
 
         File file = new File(nomeFile);
         try{
+            if(file.exists() && !caricato){
+                int scelta= JOptionPane.showConfirmDialog(
+                        this, "Attenzione! Premendo 'Yes' andrai a sovrascrivere la libreria che si trova in "
+                                + file.getAbsolutePath()+" andando a perdere i libri presenti \nVuoi procedere?",
+                        "Attenzione!",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE
+                );
+                if(scelta!=JOptionPane.YES_OPTION) return;
+            }
             consulta_lib.salva(file);
+            caricato=false;
             JOptionPane.showMessageDialog(this, "Salvataggio avvenuto con successo! " +
                     "Ora la tua libreria si trova in "+file.getAbsolutePath());
         }catch(Exception e9){
             JOptionPane.showMessageDialog(this,"Errore: "+e9.getMessage());
         }
-
-
+        Libreria.INSTANCE.svuotaLibreria();
+        this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());
+        this.tabella.setModel(this.modello);
+        this.tabella.revalidate();
+        this.tabella.repaint();
     }//salva
 
     private void caricaCSV(ActionEvent e){
@@ -509,22 +519,12 @@ public class LibreriaGUI extends JFrame {
         File file = new File(nomeFile);
         try{
             consulta_lib.carica(file);
+            caricato=true;
             ricarica();
         }catch(Exception e10){
             JOptionPane.showMessageDialog(this,"Errore: "+e10.getMessage());
         }
     }//carica
-
-    private void svuotaLibreria(ActionEvent e){
-        if(tabella.getRowCount()==0){
-            JOptionPane.showMessageDialog(this, "Libreria vuota!");
-        }
-        Libreria.INSTANCE.svuotaLibreria();
-        this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());
-        this.tabella.setModel(this.modello);
-        this.tabella.revalidate();
-        this.tabella.repaint();
-    }//svuotaLibreria
 
     private void mostraLibreria(ActionEvent e){
         this.modello=new LibreriaAdapter(Libreria.INSTANCE.getLibri());

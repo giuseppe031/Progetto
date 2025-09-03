@@ -18,7 +18,7 @@ public class PermanenzaCSV implements PermanenzaStrategy {
 
     @Override
     public void salva(File file) {
-       try(CSVWriter writer = new CSVWriter(new FileWriter(file, true))) {
+       try(CSVWriter writer = new CSVWriter(new FileWriter(file))) {
            List<Libro> libri = Libreria.INSTANCE.getLibri();
            for(Libro lib : libri) {
                String titolo = lib.getTitolo();
@@ -38,7 +38,7 @@ public class PermanenzaCSV implements PermanenzaStrategy {
                }
 
                String[] riga = {titolo, autore, isbn, genere, valutazione, stato};
-               if(presente(file,riga[2])) throw new IllegalArgumentException("L'ISBN è già presente nel file");
+               //if(presente(file,riga[2])) throw new IllegalArgumentException("L'ISBN è già presente nel file");
                writer.writeNext(riga);
            }
 
