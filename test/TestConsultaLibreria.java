@@ -281,6 +281,4 @@ public class TestConsultaLibreria {
 
     }//test_carica
 
-
-
 }//TestFiltraPerGenere

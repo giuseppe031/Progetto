@@ -9,12 +9,9 @@ public class LibreriaAdapter extends AbstractTableModel {
 
     private final String[] colonne = {"Titolo","Autore","ISBN","Genere","Valutazione","Stato lettura"};
     private final List<Libro> libri;
-
     public LibreriaAdapter(List<Libro> libri) {
         this.libri = libri;
     }
-
-
     @Override
     public int getRowCount() {
         return libri.size();
