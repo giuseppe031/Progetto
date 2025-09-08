@@ -7,7 +7,7 @@ di **aggiungere** i suoi libri, **rimuoverli** e **modificarli**. Inoltre, è po
 
 ## Requisiti
 
-- Java 17
+- Java 
 
 ## Come eseguire il codice
 
